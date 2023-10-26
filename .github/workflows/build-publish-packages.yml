@@ -19,8 +19,11 @@ jobs:
       packages: write
 
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    - name: Touch the repo so that the action re-runs
+      run: echo Let's touch this so that it re-runs
+
+    - name: Checkout the repository
+      uses: actions/checkout@v2
 
     - name: Log in to the Container registry
       uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
