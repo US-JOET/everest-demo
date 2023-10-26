@@ -1,0 +1,35 @@
+name: build-publish-packages
+
+on:
+  push:
+    branches:
+      - build_pkg_**
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+  build-and-push-image:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build the images using docker-compose 
+      run: docker compose -f docker-compose.build.yml build --pull --no-cache
+
+    - name: Push images to the ghcr.io registry
+      run: docker compose -f docker-compose.build.yml push
