@@ -19,9 +19,6 @@ jobs:
       packages: write
 
     steps:
-    - name: Touch the repo so that the action re-runs
-      run: echo Let's touch this so that it re-runs
-
     - name: Checkout the repository
       uses: actions/checkout@v2
 
