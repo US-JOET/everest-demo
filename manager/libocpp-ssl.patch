@@ -1,0 +1,47 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 07a310c..ffb36f8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -25,7 +25,7 @@ endif()
+ # dependencies
+ find_package(Boost COMPONENTS program_options regex system thread REQUIRED)
+ find_package(SQLite3 REQUIRED)
+-find_package(OpenSSL 3 REQUIRED)
++find_package(OpenSSL REQUIRED)
+ 
+ if(NOT DISABLE_EDM)
+     evc_setup_edm()
+diff --git a/lib/ocpp/common/websocket/websocket_libwebsockets.cpp b/lib/ocpp/common/websocket/websocket_libwebsockets.cpp
+index 3139856..e9c5fbb 100644
+--- a/lib/ocpp/common/websocket/websocket_libwebsockets.cpp
++++ b/lib/ocpp/common/websocket/websocket_libwebsockets.cpp
+@@ -156,15 +156,18 @@ public:
+ static bool verify_csms_cn(const std::string& hostname, bool preverified, const X509_STORE_CTX* ctx,
+                            bool allow_wildcards) {
+ 
++    X509_STORE_CTX* non_const_ctx = X509_STORE_CTX_new();	
++    memcpy(non_const_ctx, ctx, sizeof(ctx)); // args are (dest, src, size)
++
+     // Error depth gives the depth in the chain (with 0 = leaf certificate) where
+     // a potential (!) error occurred; error here means current error code and can also be "OK".
+     // This thus gives also the position (in the chain)  of the currently to be verified certificate.
+     // If depth is 0, we need to check the leaf certificate;
+     // If depth > 0, we are verifying a CA (or SUB-CA) certificate and thus trust "preverified"
+-    int depth = X509_STORE_CTX_get_error_depth(ctx);
++    int depth = X509_STORE_CTX_get_error_depth(non_const_ctx);
+ 
+     if (!preverified) {
+-        int error = X509_STORE_CTX_get_error(ctx);
++        int error = X509_STORE_CTX_get_error(non_const_ctx);
+         EVLOG_warning << "Invalid certificate error '" << X509_verify_cert_error_string(error) << "' (at chain depth '"
+                       << depth << "')";
+     }
+@@ -172,7 +175,7 @@ static bool verify_csms_cn(const std::string& hostname, bool preverified, const
+     // only check for CSMS server certificate
+     if (depth == 0 and preverified) {
+         // Get server certificate
+-        X509* server_cert = X509_STORE_CTX_get_current_cert(ctx);
++        X509* server_cert = X509_STORE_CTX_get_current_cert(non_const_ctx);
+ 
+         // TODO (ioan): this manual verification is done because libwebsocket does not take into account
+         // the host parameter that we are setting during 'tls_init'. This function should be removed

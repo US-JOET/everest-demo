@@ -1,0 +1,13 @@
+diff --git a/dependencies.yaml b/dependencies.yaml
+index d1fdfba..e8b0d0e 100644
+--- a/dependencies.yaml
++++ b/dependencies.yaml
+@@ -50,7 +50,7 @@ libcurl:
+ # and would otherwise be overwritten by the version used there
+ libevse-security:
+   git: https://github.com/EVerest/libevse-security.git
+-  git_tag: v0.7.0
++  git_tag: 4330ce2e28e25535dd01558edb2331891c146769
+   cmake_condition: "EVEREST_DEPENDENCY_ENABLED_LIBEVSE_SECURITY"
+ 
+ # OCPP
