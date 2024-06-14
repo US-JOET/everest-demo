@@ -355,11 +355,11 @@ echo "Copying over all EVerest patches"
 docker cp config-sil-ocpp201-pnc.yaml  everest-ac-demo-manager-1:/ext/source/config/config-sil-ocpp201-pnc.yaml
 docker cp manager/enable_payment_method.patch everest-ac-demo-manager-1:/tmp/
 docker cp manager/support_payment_in_jsevmanager.patch everest-ac-demo-manager-1:/tmp/
-docker cp manager/ocpp201.module.patch everest-ac-demo-manager-1:/tmp/
+docker cp manager/everest-core.patch everest-ac-demo-manager-1:/tmp/
 docker cp manager/libocpp.patch everest-ac-demo-manager-1:/tmp/
 
 echo "Applying the ones that need recompile first"
-docker exec everest-ac-demo-manager-1 /bin/bash -c "apk add patch && cd /ext/source && patch -p0 -i /tmp/ocpp201.module.patch"
+docker exec everest-ac-demo-manager-1 /bin/bash -c "apk add patch && cd /ext/source && patch -p0 -i /tmp/everest-core.patch"
 docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/cache/cpm/libocpp/6502037f667273b3f55e917ec94a3fe0a2d27720 && patch -p0 -i /tmp/libocpp.patch"
 
 echo "Recompiling"
