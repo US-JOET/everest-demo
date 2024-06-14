@@ -357,10 +357,21 @@ docker cp manager/enable_payment_method.patch everest-ac-demo-manager-1:/tmp/
 docker cp manager/support_payment_in_jsevmanager.patch everest-ac-demo-manager-1:/tmp/
 docker cp manager/ocpp201.module.patch everest-ac-demo-manager-1:/tmp/
 docker cp manager/libocpp.patch everest-ac-demo-manager-1:/tmp/
+docker cp manager/dependencies.patch everest-ac-demo-manager-1:/tmp/
+docker cp manager/libocpp-ssl.patch everest-ac-demo-manager-1:/tmp/
+docker cp manager/libevse-security.patch everest-ac-demo-manager-1:/tmp/
+
+echo "Changing dependencies"
+docker exec everest-ac-demo-manager-1 /bin/bash -c "apk add patch"
+docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/source && patch -p1 -i /tmp/dependencies.patch"
+
+echo "Reconfiguring"
+docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/source/build && cmake -DBUILD_TESTING=ON .."
 
 echo "Applying the ones that need recompile first"
-docker exec everest-ac-demo-manager-1 /bin/bash -c "apk add patch && cd /ext/source && patch -p0 -i /tmp/ocpp201.module.patch"
-docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/cache/cpm/libocpp/6502037f667273b3f55e917ec94a3fe0a2d27720 && patch -p0 -i /tmp/libocpp.patch"
+docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/source && patch -p1 -i /tmp/ocpp201.module.patch"
+docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/cache/cpm/libocpp/6502037f667273b3f55e917ec94a3fe0a2d27720/libocpp && patch -p0 -i /tmp/libocpp.patch && patch -p1 -i /tmp/libocpp-ssl.patch"
+docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/cache/cpm/libevse-security/f4c722882414e8cb77a2f572b45fde98e2647f8d/libevse-security && patch -p1 -i /tmp/libevse-security.patch"
 
 echo "Recompiling"
 docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/source/build && make install -j6"
