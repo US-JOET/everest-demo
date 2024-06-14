@@ -363,7 +363,7 @@ docker exec everest-ac-demo-manager-1 /bin/bash -c "apk add patch && cd /ext/sou
 docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/cache/cpm/libocpp/6502037f667273b3f55e917ec94a3fe0a2d27720 && patch -p0 -i /tmp/libocpp.patch"
 
 echo "Recompiling"
-docker exec everest-ac-demo-manager-1 /bin/bash -c "cd /ext/source/build && make install -j6"
+docker exec everest-ac-demo-manager-1 /bin/bash -c "export CPM_SOURCE_CACHE='/ext/cache/cpm'; cd /ext/source/build && cmake .. && make -j6 && make install -j6"
 
 echo "Now applying the patches that don't need recompile and will, in fact, be overridden by recompile"
 docker cp manager/enable_evcc_logging.cfg everest-ac-demo-manager-1:/ext/source/build/dist/etc/everest/default_logging.cfg
