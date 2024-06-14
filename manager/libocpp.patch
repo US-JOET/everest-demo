@@ -1,4 +1,4 @@
-diff -r -uw libocpp_unmod/lib/ocpp/v201/charge_point.cpp libocpp/lib/ocpp/v201/charge_point.cpp
+unchanged:
 --- libocpp_unmod/lib/ocpp/v201/charge_point.cpp	2024-06-11 14:29:41
 +++ libocpp/lib/ocpp/v201/charge_point.cpp	2024-06-12 13:31:16
 @@ -14,6 +14,7 @@
@@ -62,8 +62,7 @@ diff -r -uw libocpp_unmod/lib/ocpp/v201/charge_point.cpp libocpp/lib/ocpp/v201/c
      ocpp::CallResult<SetChargingProfileResponse> call_result(response, call.uniqueId);
      this->send<SetChargingProfileResponse>(call_result);
  }
-Only in libocpp/lib/ocpp/v201: charge_point.cpp.orig
-diff -r -uw libocpp_unmod/lib/ocpp/v201/messages/SetChargingProfile.cpp libocpp/lib/ocpp/v201/messages/SetChargingProfile.cpp
+unchanged:
 --- libocpp_unmod/lib/ocpp/v201/messages/SetChargingProfile.cpp	2024-06-11 14:29:41
 +++ libocpp/lib/ocpp/v201/messages/SetChargingProfile.cpp	2024-06-12 12:25:48
 @@ -7,6 +7,15 @@
@@ -94,3 +93,16 @@ diff -r -uw libocpp_unmod/lib/ocpp/v201/messages/SetChargingProfile.cpp libocpp/
  
      // the optional parts of the message
      if (j.contains("customData")) {
+only in patch2:
+unchanged:
+--- a/config/v201/config.json
++++ b/config/v201/config.json
+@@ -798,7 +798,7 @@
+             "ChargingScheduleChargingRateUnit": {
+                 "variable_name": "RateUnit",
+                 "attributes": {
+-                    "Actual": ""
++                    "Actual": "[\"A\", \"W\"]"
+                 }
+             },
+             "SmartChargingCtrlrAvailableEnabled": {
