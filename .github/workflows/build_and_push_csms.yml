@@ -94,7 +94,7 @@ jobs:
         shell: bash
         run: |
             pushd ${{ matrix.csms }}-csms
-            bash ../everest-demo/${{ matrix.csms }}/apply-patches.sh
+            bash ../everest-demo/${{ matrix.csms }}/apply-compile-patches.sh
 
 #       - name: Build using docker compose
 #         id: build-using-docker-compose
