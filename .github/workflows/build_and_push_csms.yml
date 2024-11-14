@@ -103,8 +103,8 @@ jobs:
             docker image list
             # hardcoding the list of containers for now
             echo "Retagging {{ $matrix.csms }}-csms-gateway:latest to "
-            docker tag {{ $matrix.csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ $matrix.csms }}-csms-gateway:"${TAG}"
-            docker tag {{ $matrix.csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ $matrix.csms }}-csms-manager:"${TAG}"
+            docker tag ${{ matrix.csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ matrix.csms }}-csms-gateway:"${TAG}"
+            docker tag ${{ matrix.csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ matrix.csms }}-csms-manager:"${TAG}"
             echo "After retagging, image list is"
             docker image list
 
@@ -113,7 +113,7 @@ jobs:
         shell: bash
         run: |
             source .env
-            docker push ghcr.io/everest/everest-demo/${{ $matrix.csms }}-csms-gateway:"${TAG}"
-            docker push ghcr.io/everest/everest-demo/${{ $matrix.csms }}-csms-manager:"${TAG}"
+            docker push ghcr.io/everest/everest-demo/${{ matrix.csms }}-csms-gateway:"${TAG}"
+            docker push ghcr.io/everest/everest-demo/${{ matrix.csms }}-csms-manager:"${TAG}"
 
 
