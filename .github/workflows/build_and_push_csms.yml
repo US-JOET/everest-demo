@@ -104,9 +104,16 @@ jobs:
             # hardcoding the list of containers for now
             echo "Retagging {{ $matrix.csms }}-csms-gateway:latest to "
             docker tag ${{ matrix.csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ matrix.csms }}-csms-gateway:"${TAG}"
-            docker tag ${{ matrix.csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ matrix.csms }}-csms-manager:"${TAG}"
+            docker tag ${{ matrix.csms }}-csms-manager:latest ghcr.io/everest/everest-demo/${{ matrix.csms }}-csms-manager:"${TAG}"
             echo "After retagging, image list is"
             docker image list
+
+      - name: Log into GitHub container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push the images as packages
         id: push-the-images-as-packages
