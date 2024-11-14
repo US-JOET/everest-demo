@@ -90,6 +90,7 @@ jobs:
         shell: bash
         run: |
             echo "Using docker-compose instead of the build-and-push action since we don't have to duplicate the set of services in that case"
+            pushd ${{ matrix.csms }}-csms
             docker compose build
             
       - name: List and export newly built images
