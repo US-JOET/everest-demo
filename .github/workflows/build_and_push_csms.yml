@@ -39,6 +39,7 @@ jobs:
         id: docker-image-version-check
         shell: bash
         run: |
+          cd everest-demo
           if ! [[ -s '.env'  ]]; then
             echo 'Error: No .env file found.'
             exit 1
@@ -81,9 +82,8 @@ jobs:
         id: configure-csms
         shell: bash
         run: |
-            pushd everest-demo
-            cd ${{ matrix.csms }}
-            bash apply-patches.sh
+            pushd ${{ matrix.csms }}
+            bash ../everest-demo/${{ matrix.csms }}/apply-patches.sh
 
       - name: Build using docker compose
         id: build-using-docker-compose
