@@ -93,8 +93,24 @@ jobs:
             pushd ${{ matrix.csms }}-csms
             docker compose build
             
-      - name: List and export newly built images
-        id: list-and-export-newly-built-images
+      - name: List, tag and push newly built images
+        id: list-tag-and-push-newly-built-images
         shell: bash
         run: |
+            echo "Before retagging, image list is"
             docker image list
+            # hardcoding the list of containers for now
+            echo "Retagging {{ $matrix-csms }}-csms-gateway:latest to "
+            docker tag {{ $matrix-csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ $matrix-csms }}-csms-gateway:"${TAG}"
+            docker tag {{ $matrix-csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ $matrix-csms }}-csms-manager:"${TAG}"
+            echo "After retagging, image list is"
+            docker image list
+
+      - name: Push the images as packages
+        id: push-the-images-as-packages
+        shell: bash
+        run: |
+            docker push ghcr.io/everest/everest-demo/${{ $matrix-csms }}-csms-gateway:"${TAG}"
+            docker push ghcr.io/everest/everest-demo/${{ $matrix-csms }}-csms-manager:"${TAG}"
+
+
