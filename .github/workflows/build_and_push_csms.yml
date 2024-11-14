@@ -23,7 +23,7 @@ jobs:
       matrix:
         include:
           - csms: maeve
-            csms_repo: https://github.com/louisg1337/maeve-csms.git
+            csms_repo: louisg1337/maeve-csms
             csms_branch: set_charging_profile
 #           - csms_dir: citrineos
 #             csms_repo: https://github.com/citrineos/citrineos-core.git
