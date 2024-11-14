@@ -89,6 +89,7 @@ jobs:
         id: build-using-docker-compose
         shell: bash
         run: |
+            source .env
             echo "Using docker-compose instead of the build-and-push action since we don't have to duplicate the set of services in that case"
             pushd ${{ matrix.csms }}-csms
             docker compose build
@@ -97,12 +98,13 @@ jobs:
         id: list-tag-and-push-newly-built-images
         shell: bash
         run: |
+            source .env
             echo "Before retagging, image list is"
             docker image list
             # hardcoding the list of containers for now
-            echo "Retagging {{ $matrix-csms }}-csms-gateway:latest to "
-            docker tag {{ $matrix-csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ $matrix-csms }}-csms-gateway:"${TAG}"
-            docker tag {{ $matrix-csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ $matrix-csms }}-csms-manager:"${TAG}"
+            echo "Retagging {{ $matrix.csms }}-csms-gateway:latest to "
+            docker tag {{ $matrix.csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ $matrix.csms }}-csms-gateway:"${TAG}"
+            docker tag {{ $matrix.csms }}-csms-gateway:latest ghcr.io/everest/everest-demo/${{ $matrix.csms }}-csms-manager:"${TAG}"
             echo "After retagging, image list is"
             docker image list
 
@@ -110,7 +112,8 @@ jobs:
         id: push-the-images-as-packages
         shell: bash
         run: |
-            docker push ghcr.io/everest/everest-demo/${{ $matrix-csms }}-csms-gateway:"${TAG}"
-            docker push ghcr.io/everest/everest-demo/${{ $matrix-csms }}-csms-manager:"${TAG}"
+            source .env
+            docker push ghcr.io/everest/everest-demo/${{ $matrix.csms }}-csms-gateway:"${TAG}"
+            docker push ghcr.io/everest/everest-demo/${{ $matrix.csms }}-csms-manager:"${TAG}"
 
 
