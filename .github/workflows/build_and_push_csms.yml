@@ -82,7 +82,7 @@ jobs:
         id: configure-csms
         shell: bash
         run: |
-            pushd ${{ matrix.csms }}
+            pushd ${{ matrix.csms }}-csms
             bash ../everest-demo/${{ matrix.csms }}/apply-patches.sh
 
       - name: Build using docker compose
