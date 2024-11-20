@@ -1,5 +1,7 @@
---- /ext/source/modules/EvseV2G/iso_server.cpp
-+++ /ext/source/modules/EvseV2G/iso_server.cpp
+diff --git a/modules/EvseV2G/iso_server.cpp b/modules/EvseV2G/iso_server.cpp
+index 5cdf0427..7bb24356 100644
+--- a/modules/EvseV2G/iso_server.cpp
++++ b/modules/EvseV2G/iso_server.cpp
 @@ -1130,32 +1130,55 @@ static enum v2g_event handle_iso_charge_parameter_discovery(struct v2g_connectio
      res->EVSEChargeParameter_isUsed = 0;
      res->EVSEProcessing = (iso2_EVSEProcessingType)conn->ctx->evse_v2g_data.evse_processing[PHASE_PARAMETER];
@@ -73,7 +75,7 @@
              conn->ctx->evse_v2g_data.evse_sa_schedule_list.SAScheduleTuple.array[0]
                  .PMaxSchedule.PMaxScheduleEntry.arrayLen = 1;
              conn->ctx->evse_v2g_data.evse_sa_schedule_list.SAScheduleTuple.arrayLen = 1;
-@@ -1212,14 +1235,8 @@ static enum v2g_event handle_iso_charge_parameter_discovery(struct v2g_connectio
+@@ -1212,14 +1235,13 @@ static enum v2g_event handle_iso_charge_parameter_discovery(struct v2g_connectio
          populate_physical_value_float(&res->AC_EVSEChargeParameter.EVSEMaxCurrent, max_current, 1,
                                        iso2_unitSymbolType_A);
  
@@ -81,7 +83,11 @@
 -        res->AC_EVSEChargeParameter.EVSENominalVoltage = conn->ctx->evse_v2g_data.evse_nominal_voltage;
 -        int64_t nom_voltage = conn->ctx->evse_v2g_data.evse_nominal_voltage.Value *
 -                              pow(10, conn->ctx->evse_v2g_data.evse_nominal_voltage.Multiplier);
--
++         /* Nominal voltage */
++         res->AC_EVSEChargeParameter.EVSENominalVoltage = conn->ctx->evse_v2g_data.evse_nominal_voltage;
++         int64_t nom_voltage = conn->ctx->evse_v2g_data.evse_nominal_voltage.Value *
++                               pow(10, conn->ctx->evse_v2g_data.evse_nominal_voltage.Multiplier);
+ 
          /* Calculate pmax based on max current, nominal voltage and phase count (which the car has selected above) */
 -        int64_t pmax = max_current * nom_voltage *
 -                       ((iso2_EnergyTransferModeType_AC_single_phase_core == req->RequestedEnergyTransferMode) ? 1 : 3);
